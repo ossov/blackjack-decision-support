@@ -1,8 +1,11 @@
 """Voice interaction for the blackjack simulator."""
 
+import logging
 import re
 from dataclasses import dataclass
 from typing import Callable, Literal
+
+LOGGER = logging.getLogger(__name__)
 
 Phase = Literal["turn", "insurance"]
 COMMANDS = {
@@ -20,7 +23,7 @@ class VoiceResult:
 
 
 def recognize_command(transcript: str, allowed: frozenset[str]) -> str | None:
-    match = re.fullmatch(r"\s*([a-z]+)[.!?]?\s*", transcript.casefold())
+    match = re.fullmatch(r"\s*([a-z]+)[.,!?\u2026]*\s*", transcript.casefold())
     if match and match[1] in allowed:
         return match[1]
     return None
@@ -42,7 +45,7 @@ def run_turn(
     if allowed:
         try:
             speak(advice)
-            for prompt in (None, "Please repeat your move."):
+            for prompt in (None, f"Allowed commands: {', '.join(sorted(allowed))}."):
                 if prompt:
                     speak(prompt)
                 transcript = listen()
@@ -53,8 +56,11 @@ def run_turn(
                     break
             else:
                 result = VoiceResult(None, tuple(transcripts), True)
-        except (OSError, RuntimeError) as error:
+        except Exception as error:
             result = VoiceResult(None, tuple(transcripts), True, type(error).__name__)
 
-    log(result)
+    try:
+        log(result)
+    except Exception:
+        LOGGER.exception("Could not write the Voice result to the session log")
     return result

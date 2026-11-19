@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import platform
 import subprocess
 import sys
 import tempfile
@@ -10,10 +11,17 @@ from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import run_turn
+from . import COMMANDS, run_turn
 
 SAMPLE_RATE = 16_000
 FRAME_SIZE = 512
+START_TIMEOUT_SECONDS = 2
+RECORDING_LIMIT_SECONDS = 6
+END_PAUSE_FRAMES = 16
+
+
+class InputOverflowError(RuntimeError):
+    """The microphone dropped audio samples."""
 
 
 class LocalAudio:
@@ -53,26 +61,25 @@ class LocalAudio:
         return result["text"]
 
     def speak(self, text: str) -> None:
-        try:
-            with tempfile.TemporaryDirectory() as folder:
-                output = Path(folder) / "advice.wav"
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder) / "advice.wav"
+            try:
                 subprocess.run(
                     [sys.executable, "-m", "piper", "--model", str(self.piper_model), "--output_file", str(output)],
                     input=text, text=True, check=True, timeout=15,
                 )
-                if sys.platform == "win32":
-                    import winsound
-
-                    winsound.PlaySound(str(output), winsound.SND_FILENAME)
-                else:
-                    subprocess.run(["afplay", str(output)], check=True, timeout=15)
-        except (OSError, RuntimeError, subprocess.SubprocessError) as error:
-            if sys.platform == "win32":
-                raise RuntimeError("Piper playback failed") from error
-            try:
+            except (OSError, subprocess.SubprocessError):
+                if sys.platform != "darwin":
+                    raise
                 subprocess.run(["say", "--", text], check=True, timeout=15)
-            except (OSError, subprocess.SubprocessError) as error:
-                raise RuntimeError("Speech playback failed") from error
+                return
+
+            if sys.platform == "win32":
+                import winsound
+
+                winsound.PlaySound(str(output), winsound.SND_FILENAME)
+            else:
+                subprocess.run(["afplay", str(output)], check=True, timeout=15)
 
     def beep(self, frequency: int) -> None:
         time = self.np.arange(SAMPLE_RATE // 8) / SAMPLE_RATE
@@ -103,20 +110,20 @@ class LocalAudio:
         with self.device.InputStream(
             samplerate=SAMPLE_RATE, blocksize=FRAME_SIZE, channels=1, dtype="int16",
         ) as stream:
-            for _ in range(6 * SAMPLE_RATE // FRAME_SIZE):
+            for _ in range(RECORDING_LIMIT_SECONDS * SAMPLE_RATE // FRAME_SIZE):
                 frame, overflow = stream.read(FRAME_SIZE)
                 if overflow:
-                    return None
+                    raise InputOverflowError("The microphone dropped audio samples")
                 samples = self.torch.from_numpy(frame[:, 0].astype("float32") / 32768)
                 voiced = self.detector(samples, SAMPLE_RATE).item() >= 0.5
                 frames.append(frame)
                 spoken = spoken or voiced
                 quiet_frames = 0 if voiced else quiet_frames + 1
-                if spoken and quiet_frames >= 16:
+                if spoken and quiet_frames >= END_PAUSE_FRAMES:
                     break
-                if not spoken and len(frames) >= 2 * SAMPLE_RATE // FRAME_SIZE:
+                if not spoken and len(frames) >= START_TIMEOUT_SECONDS * SAMPLE_RATE // FRAME_SIZE:
                     return None
-        if spoken and quiet_frames >= 16:
+        if spoken and quiet_frames >= END_PAUSE_FRAMES:
             return self.np.concatenate(frames)
         return None
 
@@ -125,7 +132,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Try one local Voice interaction.")
     parser.add_argument("--phase", required=True, choices=("turn", "insurance"))
     parser.add_argument("--advice", required=True, help="Checked advice with the action first.")
-    parser.add_argument("--legal", nargs="+", required=True)
+    parser.add_argument("--legal", nargs="+", required=True, type=str.lower)
     parser.add_argument("--piper-model", required=True, type=Path)
     parser.add_argument("--whisper-model", help="Override the default English Whisper model.")
     parser.add_argument("--log", required=True, type=Path)
@@ -134,7 +141,15 @@ def main() -> int:
     if sys.platform not in {"win32", "darwin"}:
         parser.error("The audio adapter supports Windows and Apple silicon macOS.")
 
-    audio = LocalAudio(args.piper_model, args.whisper_model)
+    if sys.platform == "darwin" and platform.machine() != "arm64":
+        parser.error("Run the macOS audio adapter with native Apple silicon Python.")
+    if set(args.legal) - COMMANDS[args.phase]:
+        parser.error(f"--legal for {args.phase} accepts: {', '.join(sorted(COMMANDS[args.phase]))}")
+
+    try:
+        audio = LocalAudio(args.piper_model, args.whisper_model)
+    except Exception as error:
+        parser.exit(1, f"Could not start Voice ({type(error).__name__}): {error}\n")
 
     def log(result):
         event = {"timestamp": datetime.now(timezone.utc).isoformat(), **asdict(result)}

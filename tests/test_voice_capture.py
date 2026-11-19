@@ -2,7 +2,7 @@ import unittest
 from contextlib import nullcontext
 from unittest.mock import MagicMock, Mock
 
-from bjds.voice.__main__ import FRAME_SIZE, LocalAudio
+from bjds.voice.__main__ import FRAME_SIZE, InputOverflowError, LocalAudio
 
 
 class CaptureTests(unittest.TestCase):
@@ -40,9 +40,23 @@ class CaptureTests(unittest.TestCase):
     def test_capture_discards_an_overflow(self):
         audio, stream, _ = self.make_audio([], overflow=True)
 
-        self.assertIsNone(audio.capture())
+        with self.assertRaises(InputOverflowError):
+            audio.capture()
         stream.read.assert_called_once_with(FRAME_SIZE)
         audio.detector.assert_not_called()
+
+    def test_unfinished_speech_at_time_limit_is_discarded(self):
+        audio, stream, _ = self.make_audio([0.9] * 187)
+
+        self.assertIsNone(audio.capture())
+        self.assertEqual(stream.read.call_count, 187)
+
+    def test_overflow_after_speech_has_started_is_reported(self):
+        audio, stream, frame = self.make_audio([0.9])
+        stream.read.side_effect = [(frame, False), (frame, True)]
+
+        with self.assertRaises(InputOverflowError):
+            audio.capture()
 
 
 if __name__ == "__main__":

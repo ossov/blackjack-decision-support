@@ -8,7 +8,7 @@ The first beep signals that the player can speak. Silero VAD detects speech and 
 
 The program checks the transcript against the current legal moves. It accepts one command at a time. During play, the command can be hit, stand, double, or split. During insurance, it can be yes or no. If the first attempt fails, the player gets one retry. A second failure returns a request to show the app's decision buttons. The result includes both transcripts and the accepted move. The app records the result in its session log. The app also records whether the player actually uses a backup button.
 
-Nine automated tests passed. Six tested command handling, retries, and fallback behavior. Three checked that recording stops after a pause and discards silence or an audio overflow. The tests used simulated transcripts and microphone input. Live microphone accuracy, response time, and integration with the full simulator remain unmeasured.
+Fifteen automated tests passed. They covered command validation, retries, audio failures, and fallback behavior. They also checked that a logging failure preserves the turn result. The tests used simulated transcripts and microphone input. Live microphone accuracy, response time, and integration with the full simulator remain unmeasured.
 
 # Work Plan
 
