@@ -1,0 +1,17 @@
+{
+  "_about": "App -> Engine: the player's choice (from Voice or the backup buttons). One of the three shapes below is sent at a time.",
+  "move": {
+    "type": "move",
+    "move": "stand",
+    "hand_id": "seat0",
+    "source": "voice"
+  },
+  "bet": {
+    "type": "bet",
+    "amount": 25
+  },
+  "insurance": {
+    "type": "insurance",
+    "take": false
+  }
+}

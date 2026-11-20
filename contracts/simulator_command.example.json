@@ -1,0 +1,19 @@
+{
+  "_about": "Engine -> Simulator, only after the Engine accepted the move. Never sent on a real table.",
+  "move": {
+    "type": "move",
+    "seat": 0,
+    "hand_id": "seat0",
+    "move": "stand"
+  },
+  "bet": {
+    "type": "bet",
+    "seat": 0,
+    "amount": 25
+  },
+  "insurance": {
+    "type": "insurance",
+    "seat": 0,
+    "take": false
+  }
+}

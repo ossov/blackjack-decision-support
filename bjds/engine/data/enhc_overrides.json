@@ -1,0 +1,29 @@
+{
+ "about": "Changes when the dealer takes no hole card and doubles/splits are lost to a dealer blackjack.",
+ "changes": [
+  {
+   "hand": "hard 11",
+   "dealer": "10",
+   "action": "H",
+   "note": "no hole card: don't double into a possible dealer blackjack"
+  },
+  {
+   "hand": "pair A",
+   "dealer": "A",
+   "action": "H",
+   "note": "no hole card"
+  },
+  {
+   "hand": "pair 8",
+   "dealer": "10",
+   "action": "H",
+   "note": "no hole card"
+  },
+  {
+   "hand": "pair 8",
+   "dealer": "A",
+   "action": "H",
+   "note": "no hole card"
+  }
+ ]
+}

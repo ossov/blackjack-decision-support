@@ -1,0 +1,24 @@
+{
+  "kind": "move",
+  "hand_id": "seat0",
+  "hand": {
+    "cards": [
+      9,
+      7
+    ],
+    "total": 16,
+    "soft": false
+  },
+  "upcard": 10,
+  "true_count": 1.78,
+  "action": "stand",
+  "basic_strategy": "hit",
+  "reason": "stand, 16 against 10, count is +1 (count changes the move)",
+  "deviation": true,
+  "table_row": "hard 16",
+  "legal_moves": [
+    "hit",
+    "stand",
+    "double"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "insurance",
+  "action": "no",
+  "basic_strategy": "no",
+  "take": false,
+  "upcard": 1,
+  "true_count": 2.88,
+  "reason": "no to insurance, count is +2 (take it at +3 or more)",
+  "legal_moves": [
+    "yes",
+    "no"
+  ]
+}

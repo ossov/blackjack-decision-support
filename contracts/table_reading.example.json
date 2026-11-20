@@ -1,0 +1,26 @@
+{
+  "stage": "player_turn",
+  "active_hand": "seat0",
+  "hands": [
+    {
+      "hand_id": "seat0",
+      "seat": 0,
+      "bubble": "16",
+      "new_cards": [],
+      "bet": 25
+    },
+    {
+      "hand_id": "seat1",
+      "seat": 1,
+      "bubble": "6/16",
+      "new_cards": []
+    }
+  ],
+  "dealer": {
+    "bubble": "10",
+    "new_cards": []
+  },
+  "discard_tray_height": 3.5,
+  "cut_card_out": false,
+  "timestamp": 1795208400.12
+}
