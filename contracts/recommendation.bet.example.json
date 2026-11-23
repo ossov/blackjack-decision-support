@@ -1,0 +1,12 @@
+{
+  "kind": "bet",
+  "amount": 10.0,
+  "true_count": 0.0,
+  "edge": -0.005,
+  "reason": "bet $10, count is 0, no edge, bet the table minimum",
+  "min_bet": 10.0,
+  "max_bet": 1000.0,
+  "legal_moves": [
+    "bet"
+  ]
+}

@@ -1,0 +1,167 @@
+{
+ "about": "Count changes (Illustrious 18 + insurance). If the true count (rounded down) is at or above index, use at_or_above, else below.",
+ "changes": [
+  {
+   "hand": "insurance",
+   "dealer": "A",
+   "index": 3,
+   "at_or_above": "Y",
+   "below": "N",
+   "needs_hole_card": false,
+   "note": "take insurance at TC +3 or more"
+  },
+  {
+   "hand": "hard 16",
+   "dealer": "10",
+   "index": 0,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 15",
+   "dealer": "10",
+   "index": 4,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "pair 10",
+   "dealer": "5",
+   "index": 5,
+   "at_or_above": "P",
+   "below": "S",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "pair 10",
+   "dealer": "6",
+   "index": 4,
+   "at_or_above": "P",
+   "below": "S",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 10",
+   "dealer": "10",
+   "index": 4,
+   "at_or_above": "D",
+   "below": "H",
+   "needs_hole_card": true,
+   "note": ""
+  },
+  {
+   "hand": "hard 12",
+   "dealer": "3",
+   "index": 2,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 12",
+   "dealer": "2",
+   "index": 3,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 11",
+   "dealer": "A",
+   "index": 1,
+   "at_or_above": "D",
+   "below": "H",
+   "needs_hole_card": true,
+   "note": ""
+  },
+  {
+   "hand": "hard 9",
+   "dealer": "2",
+   "index": 1,
+   "at_or_above": "D",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 10",
+   "dealer": "A",
+   "index": 4,
+   "at_or_above": "D",
+   "below": "H",
+   "needs_hole_card": true,
+   "note": ""
+  },
+  {
+   "hand": "hard 9",
+   "dealer": "7",
+   "index": 3,
+   "at_or_above": "D",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 16",
+   "dealer": "9",
+   "index": 5,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 13",
+   "dealer": "2",
+   "index": -1,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 12",
+   "dealer": "4",
+   "index": 0,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 12",
+   "dealer": "5",
+   "index": -2,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 12",
+   "dealer": "6",
+   "index": -1,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  },
+  {
+   "hand": "hard 13",
+   "dealer": "3",
+   "index": -2,
+   "at_or_above": "S",
+   "below": "H",
+   "needs_hole_card": false,
+   "note": ""
+  }
+ ]
+}

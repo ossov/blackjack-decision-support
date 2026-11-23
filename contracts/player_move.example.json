@@ -1,0 +1,14 @@
+{
+  "_about": "DRAFT for the App and Voice owners to confirm. Voice -> App: the move heard, or a request for the backup buttons.",
+  "heard": {
+    "move": "stand",
+    "transcript": "stand",
+    "attempts": 1
+  },
+  "show_buttons": {
+    "move": null,
+    "transcript": "uh what",
+    "attempts": 2,
+    "show_buttons": true
+  }
+}
