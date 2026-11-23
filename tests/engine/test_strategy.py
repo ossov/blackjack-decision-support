@@ -13,7 +13,7 @@ def strat():
 
 
 # Published basic strategy, 8 decks, dealer stands on soft 17, no double
-# after split, dealer has no hole card (doubles and splits lost to a BJ).
+# after split, dealer checks for blackjack only under an ace (doubles and splits lost to a BJ under a 10).
 @pytest.mark.parametrize("low,soft,pair,up,move", [
     (16, False, None, 7, Move.HIT), (16, False, None, 6, Move.STAND),
     (12, False, None, 2, Move.HIT), (12, False, None, 4, Move.STAND),
@@ -47,9 +47,10 @@ def test_pair_of_tens_is_split_against_6_only_at_plus_4(strat):
     assert strat.decide(20, False, 10, 6, 3, ALL).move == Move.STAND
 
 
-def test_count_changes_that_need_a_hole_card_are_skipped_without_one(strat):
-    assert strat.decide(11, False, None, ACE, 5, ALL).move == Move.HIT
-    peek = Strategy(TableRules(no_hole_card=False))
+def test_count_changes_that_need_a_hole_card_are_skipped_without_one():
+    no_check = Strategy(TableRules(no_hole_card=True))      # a table with no face-down card
+    assert no_check.decide(11, False, None, ACE, 5, ALL).move == Move.HIT
+    peek = Strategy(TableRules())                          # the live table: the ace is checked
     assert peek.decide(11, False, None, ACE, 1, ALL).move == Move.DOUBLE
 
 

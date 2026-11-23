@@ -12,7 +12,7 @@ def test_bubble_text_is_read_as_total_soft_total_bj_or_bust(text, kind, low, sof
     assert (b.kind, b.low, b.soft) == (kind, low, soft)
 
 
-@pytest.mark.parametrize("bad", [None, "", "25", "6/15", "B", "J", "0"])
+@pytest.mark.parametrize("bad", [None, "", "31", "6/15", "B", "J", "0"])  # 25 is now a bust total
 def test_text_a_bubble_cannot_show_is_unreadable(bad):
     assert parse_bubble(bad) is None
 
