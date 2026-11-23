@@ -12,6 +12,7 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+recognise = ["numpy>=2", "opencv-python>=4.10", "pytesseract>=0.3.13", "mss>=10"]
 
 [tool.setuptools.packages.find]
 include = ["bjds*", "sim*"]

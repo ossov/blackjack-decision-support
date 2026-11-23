@@ -13,6 +13,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -e ".[dev]"
+      - run: sudo apt-get update && sudo apt-get install -y libgl1 tesseract-ocr
+      - run: pip install -e ".[dev,recognise]"
       # Exit code 5 means no tests were collected yet; treat that as a pass.
       - run: pytest -q || [ $? -eq 5 ]

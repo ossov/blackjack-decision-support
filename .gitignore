@@ -23,6 +23,7 @@ recordings/
 datasets/
 runs/
 models/
+!bjds/recognise/models/
 *.pt
 *.onnx
 
@@ -34,3 +35,6 @@ models/
 .vscode/
 .idea/
 ~$*
+
+# Recognition: each computer picks its own screen area
+config/capture.json
