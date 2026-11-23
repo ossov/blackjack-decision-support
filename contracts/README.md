@@ -19,8 +19,10 @@ the example and the test fails until the code matches.
 - **Card values:** `1` = ace, `2`–`9`, `10` = any ten-value card. Suits are never used.
   An uncertain card is `null`.
 - **Moves:** `"hit"`, `"stand"`, `"double"`, `"split"`; insurance is `"yes"` / `"no"`.
+- **Seats** are numbered 1-7 as the simulator does: seat 1 is first base (the dealer's
+  left, the viewer's right) and plays first. The dealer has no seat number.
 - **Hand ids** are chosen by Recognition and must stay the same for the whole
-  round, for example `"seat0"`. A hand created by a split gets a new id and
+  round, for example `"seat4"`; the second hand of a split is `"seat4b"`. A hand created by a split gets a new id and
   `"split_of"` set to the original hand's id.
 - **Game stage:** `"betting"`, `"dealing"`, `"insurance"`, `"player_turn"`,
   `"dealer_turn"`, `"round_over"`.

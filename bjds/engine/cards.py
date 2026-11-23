@@ -71,7 +71,7 @@ class Bubble:
         if self.kind == "bj":
             return "BJ"
         if self.kind == "bust":
-            return "BUST"
+            return "BUST" if self.low is None else str(self.low)
         return f"{self.low}/{self.low + 10}" if self.soft else str(self.low)
 
 
@@ -103,6 +103,8 @@ def parse_bubble(text: str | None) -> Bubble | None:
         v = int(t)
         if 2 <= v <= 21:
             return Bubble("total", v, False)
+        if 22 <= v <= 30:   # the live table shows a bust as its total, in a red bubble
+            return Bubble("bust", v, False)
         if v == 1:  # some tables show a lone ace as '1'
             return Bubble("total", 1, True)
     return None

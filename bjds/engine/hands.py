@@ -117,9 +117,9 @@ class HandState:
                 self.low, self.soft = bubble.low, bubble.soft
             elif bubble.kind == "bj":
                 self.low, self.soft = 11, True
-            else:  # bust: total from the cards if they are all known
+            else:  # bust: the shown total, or the sum of the cards if they are all known
                 known = all(c is not None for c in self.cards)
-                self.low = sum(self.cards) if known else None
+                self.low = bubble.low if bubble.low is not None else (sum(self.cards) if known else None)
                 self.soft = False
         else:  # unreadable bubble, cards came from pictures
             if self.low is not None and all(c is not None for c in inf.cards):
@@ -180,6 +180,14 @@ def infer_new_cards(hand: HandState, new: Bubble | None,
         return Inference([None] * missing, "none", "BJ but the card can't be worked out")
 
     # 3. Bust: the card must take the hard total past 21.
+    if new.kind == "bust" and new.low is not None:     # the total is shown: the card is exact
+        delta = new.low - old_low
+        if 1 <= delta <= 10 and new.low > 21:
+            if pictures and (len(pictures) != 1 or pictures[0] != delta):
+                return Inference([delta], "bubble", f"bust total says {card_name(delta)}; "
+                                 f"pictures {[card_name(p) for p in pictures]} disagree")
+            return Inference([delta], "bubble", "")
+        return Inference([None], "none", f"bust total {new.low} does not fit old total {old_low}")
     if new.kind == "bust":
         possible = [v for v in range(1, 11) if old_low + v > 21]
         if pictures:

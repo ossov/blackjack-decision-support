@@ -18,11 +18,15 @@ class TableRules:
     split_aces_one_card: bool = True
     double_on: str = "any2"                # 'any2' | '9-11' | '10-11'
     surrender: bool = False
-    # Seen in the reference recording (not stated in the proposal): the dealer
-    # takes no hole card until players finish (European No Hole Card).
-    # When True and ``enhc_lose_all`` is True, doubles/splits are lost to a
-    # dealer blackjack, so strategy avoids extra money vs 10/A.
-    no_hole_card: bool = True
+    # Checked on the live table (Nov 21, 2026): the dealer takes a face-down
+    # second card and checks it for blackjack only when showing an ace. Under a
+    # 10 a dealer blackjack shows up only after players act, and with
+    # ``enhc_lose_all`` doubles and splits are lost to it, so strategy avoids
+    # extra money against a 10. ``no_hole_card=True`` is a table with no
+    # face-down card at all (nothing checked); ``peek_on_ten=True`` a table
+    # that also checks under a 10.
+    no_hole_card: bool = False
+    peek_on_ten: bool = False
     enhc_lose_all: bool = True
     min_bet: float = 10.0
     max_bet: float = 5000.0

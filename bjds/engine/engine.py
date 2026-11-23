@@ -91,6 +91,7 @@ class Engine:
         if reading.stage == "betting" and self.stage != "betting":
             self._new_round(notes)
         self.stage = reading.stage
+        prev_active = self.active_hand_id
         self.active_hand_id = reading.active_hand
 
         self._check_tray(reading.discard_tray_height, notes)
@@ -105,9 +106,11 @@ class Engine:
                 self._add_hand(hr, notes)
         # Pass 2: totals -> cards -> count.
         for hr in reading.hands:
-            self._update(self.hands[hr.hand_id], hr, new_cards, notes)
+            # only the hand being played can take a card (a soft hand needs two cards, so the deal is done)
+            not_playing = reading.active_hand != hr.hand_id
+            self._update(self.hands[hr.hand_id], hr, new_cards, notes, left_turn=not_playing)
         if reading.dealer is not None:
-            self._update(self.dealer, reading.dealer, new_cards, notes)
+            self._update(self.dealer, reading.dealer, new_cards, notes, dealer=True)
 
         verification = None
         if self.pending_check is not None:
@@ -178,11 +181,29 @@ class Engine:
                  and (h.pair_value is not None or h.uncertain)]
         return cands[0] if len(cands) == 1 else None
 
+    def _soft_hand_stood(self, hand: HandState, bubble, left_turn: bool, dealer: bool) -> bool:
+        """A finished soft hand's bubble drops its low value ("10/20" becomes "20"). That looks
+        like a 10-value card, so it is taken as a stand only when the turn has just moved off
+        the hand, or when the dealer is on a soft total it must stand on."""
+        old = hand.bubble
+        if not (old is not None and old.kind == "total" and old.soft and bubble is not None
+                and bubble.kind == "total" and not bubble.soft and bubble.low == old.low + 10):
+            return False
+        if dealer:
+            return bubble.low >= (18 if self.rules.dealer_hits_soft_17 else 17)
+        return left_turn
+
     def _update(self, hand: HandState, hr: HandReading,
-                new_cards: list[dict], notes: list[str]) -> None:
+                new_cards: list[dict], notes: list[str], left_turn: bool = False,
+                dealer: bool = False) -> None:
         if hr.bet is not None:
             hand.bet = hr.bet
         bubble = parse_bubble(hr.bubble)
+        if self._soft_hand_stood(hand, bubble, left_turn, dealer):
+            hand.stood = True
+            hand.bubble = bubble       # only the display changed: the hand's cards and total stay
+            notes.append(f"{hand.hand_id}: stood on soft {bubble.low}")
+            return
         if hr.bubble is not None and bubble is None:
             notes.append(f"{hand.hand_id}: can't read bubble {hr.bubble!r}")
         pictures = []

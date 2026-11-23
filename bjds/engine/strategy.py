@@ -79,13 +79,15 @@ class Strategy:
             for total, row in das["pair"].items():
                 for dealer, code in row.items():
                     self.table[(f"pair {total}", dealer)] = code
-        if rules.no_hole_card and rules.enhc_lose_all:
-            for c in json.loads((data_dir / "enhc_overrides.json").read_text())["changes"]:
+        # dealer cards whose blackjack is not checked before players act
+        unchecked = (set() if not rules.enhc_lose_all else {"A", "10"} if rules.no_hole_card
+                     else set() if rules.peek_on_ten else {"10"})
+        for c in json.loads((data_dir / "enhc_overrides.json").read_text())["changes"]:
+            if c["dealer"] in unchecked:
                 self.table[(c["hand"], c["dealer"])] = c["action"]
         self.deviations: dict[tuple[str, str], dict] = {}
-        skip_hole_card = rules.no_hole_card and rules.enhc_lose_all
         for c in json.loads((data_dir / "deviations.json").read_text())["changes"]:
-            if skip_hole_card and c["needs_hole_card"]:
+            if c["needs_hole_card"] and c["dealer"] in unchecked:
                 continue
             self.deviations[(c["hand"], c["dealer"])] = c
 
