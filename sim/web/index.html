@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blackjack Table Simulator</title>
+  <link rel="stylesheet" href="/table.css">
+</head>
+<body>
+  <aside id="stats" title="T hides or shows this panel">
+    <h2>Simulator truth</h2>
+    <p class="note">Not on the table, so Recognition can't read it.</p>
+    <dl>
+      <dt>Running count</dt><dd id="st-run">0</dd>
+      <dt>True count</dt><dd id="st-true">0</dd>
+      <dt>Decks left</dt><dd id="st-decks">8.0</dd>
+      <dt>Cards seen</dt><dd id="st-seen">0</dd>
+      <dt>Last card</dt><dd id="st-last">–</dd>
+      <dt>Shoe · round</dt><dd id="st-round">–</dd>
+      <dt>Cut card</dt><dd id="st-cut">–</dd>
+    </dl>
+  </aside>
+  <div id="stage">
+    <canvas id="gl" width="1920" height="1080"></canvas>
+    <canvas id="overlay" width="1920" height="1080"></canvas>
+    <div id="bar">
+      <button id="pause" title="Space">Pause</button>
+      <button id="restart" title="New game: new shoe, new random seed">Restart</button>
+      <span id="info"></span>
+      <span id="error"></span>
+    </div>
+  </div>
+  <script type="module" src="/table.js"></script>
+</body>
+</html>

@@ -10,6 +10,7 @@ __pycache__/
 .pytest_cache/
 
 # Run output
+sim/history/
 logs/
 *.log
 recordings/

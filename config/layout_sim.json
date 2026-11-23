@@ -1,0 +1,113 @@
+{
+ "_note": "Simulator layout. Screen positions are canvas pixels (1920x1080), measured from the team's 1440p table recording at 1:1 scale; Recognition reads these. The camera was fitted to the same footage so the 3D table lines up with it; world units are cm, origin at the centre of the felt circle, +x to the viewer's right, +z towards the dealer.",
+ "canvas": [1920, 1080],
+ "camera": {
+  "principal": [1000, 240],
+  "fov": 63,
+  "pitch": 15,
+  "position": [0.5, 69.7, -146.5]
+ },
+ "world": {
+  "felt_radius": 100,
+  "felt_depth": 102.5,
+  "dealer_edge_z": 4,
+  "rim": {
+   "radius": 4.0
+  },
+  "card": [8.7, 12.2],
+  "card_step": [0.0, -5.0],
+  "split_gap": 11,
+  "seat_box": [19.5, 12.5],
+  "ring_radius": 7.4,
+  "discard_tray": {
+   "centre": [-81, -30],
+   "size": [15, 25, 12],
+   "turn": -12
+  },
+  "shoe": {
+   "mouth": [52, -20],
+   "back": [98, -6],
+   "size": [14, 12],
+   "tilt": 12,
+   "stack_cm": 30
+  },
+  "dealer_spacing": 9.2,
+  "box_shrink": 0.9,
+  "card_aim_z": 80
+ },
+ "seats": {
+  "1": {
+   "ring": [1550, 733],
+   "bubble": [1491, 670],
+   "name": [1607, 831],
+   "card": [1400, 572],
+   "box": [[1432, 710], [1540, 655], [1672, 728], [1525, 811]]
+  },
+  "2": {
+   "ring": [1398, 797],
+   "bubble": [1352, 729],
+   "name": [1435, 900],
+   "card": [1256, 593],
+   "box": [[1276, 762], [1425, 722], [1525, 818], [1340, 880]]
+  },
+  "3": {
+   "ring": [1208, 845],
+   "bubble": [1184, 766],
+   "name": [1228, 938],
+   "card": [1137, 636],
+   "box": [[1100, 792], [1266, 769], [1337, 881], [1115, 921]]
+  },
+  "4": {
+   "ring": [1000, 860],
+   "bubble": [1000, 781],
+   "name": [980, 944],
+   "card": [1011, 658],
+   "box": [[910, 796], [1090, 796], [1107, 923], [893, 923]]
+  },
+  "5": {
+   "ring": [795, 850],
+   "bubble": [816, 766],
+   "name": [768, 938],
+   "card": [865, 636],
+   "box": [[734, 769], [900, 792], [885, 921], [663, 881]]
+  },
+  "6": {
+   "ring": [605, 800],
+   "bubble": [648, 729],
+   "name": [540, 900],
+   "card": [746, 593],
+   "box": [[575, 722], [724, 762], [660, 880], [475, 818]]
+  },
+  "7": {
+   "ring": [450, 735],
+   "bubble": [509, 670],
+   "name": [387, 831],
+   "card": [602, 572],
+   "box": [[460, 655], [568, 710], [475, 811], [328, 728]]
+  }
+ },
+ "split_offset": 70,
+ "dealer": {
+  "first_card": [1011, 512],
+  "bubble": [567, 475]
+ },
+ "stage_text": [998, 276],
+ "timer": [998, 198],
+ "button_row_y": 378,
+ "hud": {
+  "balance": [116, 1010],
+  "bet": [312, 1010]
+ },
+ "_box_note": "seats[n].box: the four corners of each printed seat box in the footage (canvas px), clockwise from the corner nearest the dealer on the left.",
+ "video": {
+  "origin": [-167, -246],
+  "size": [2332, 1312],
+  "_note": "The full 16:9 video frame in layout units. The layout's 1920x1080 table crop sits inside it at (167, 246). Fitted from a screenshot of the live page (seat positions matched to within a few pixels)."
+ },
+ "page": {
+  "inset_css_px": [142, 81, 0, 20],
+  "_note": "Margins around the video on the live page (left sidebars, right sidebar, top, bottom bar), in CSS pixels. Override with ?inset=left,right,top,bottom."
+ },
+ "active_bubble_lift": 22,
+ "_card_note": "seats[n].card is the FIRST card's centre; each later card goes lower (towards the player) and slightly right, on top, as the dealers place them."
+}
